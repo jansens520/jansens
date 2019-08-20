@@ -5,6 +5,7 @@ import com.jansens.yare.core.page.PageRequest;
 import com.jansens.yare.model.SysDict;
 import com.jansens.yare.service.SysDictService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public class SysDictController {
     @Autowired
     private SysDictService sysDictService;
 
+    @PreAuthorize("hasAuthority('sys:dept:add') AND hasAuthority('sys:dept:edit')")
     @PostMapping(value = "save")
     public HttpResult save(@RequestBody SysDict record){
         return  HttpResult.ok(sysDictService.save(record));
     }
 
+    @PreAuthorize("hasAuthority('sys:dept:delete')")
     @PostMapping(value = "delete")
     public HttpResult delete(@RequestBody List<SysDict> records){
         return  HttpResult.ok(sysDictService.delete(records));
